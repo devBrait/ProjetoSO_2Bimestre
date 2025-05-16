@@ -78,6 +78,16 @@ void executar_simulacao ( Simulador *sim , int algoritmo );
 // Simula um acesso à memória
 int acessar_memoria ( Simulador *sim , int pid , int endereco_virtual );
 
+void extrair_pagina_deslocamento(Simulador *sim , int endereco_virtual, int *pagina , int * deslocamento){
+    *pagina = endereco_virtual / sim->tamanho_pagina;
+    *deslocamento = endereco_virtual % sim->tamanho_pagina;
+}
+
+int verificar_pagina_presente(Simulador *sim, int pid, int pagina) {
+    Processo *proc = &sim->processos[pid];
+    return proc->tabela_paginas[pagina].presente;
+}
+
 int main(){
 
     printf("SIMULAÇÃO\n");
