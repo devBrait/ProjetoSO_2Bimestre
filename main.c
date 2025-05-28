@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define TAMANHO_PROCESSO 16384
+
 // Definição das Estruturas
 typedef struct {
     int presente;        // 1 se a página está na memória, 0 caso contrário
@@ -43,7 +45,11 @@ typedef struct {
 
 void exibe_menu();
 
+// Inicializa o simulador com os parâmetros fornecidos
 Simulador* inicializar_simulador(int tamanho_pagina , int tamanho_memoria_fisica, int algoritmo_selecionado);
+
+// Cria um novo processo e o adiciona ao simulador
+Processo* criar_processo ( Simulador *sim , int tamanho_processo );
 
 // Menu principal
 void exibe_menu() {
@@ -108,7 +114,45 @@ Simulador* inicializar_simulador(int tamanho_pagina, int tamanho_memoria, int al
     sim->page_faults = 0;
     sim->algoritmo = algoritmo_selecionado;
 
+    for (int i = 0; i < 3; i++) {
+        criar_processo(sim, TAMANHO_PROCESSO);
+    }
+
     return sim;
+}
+
+Processo* criar_processo(Simulador *sim, int tamanho_processo) {
+    Processo *novo = (Processo*) malloc(sizeof(Processo));
+
+    novo->pid = sim->num_processos + 1;
+    novo->tamanho = tamanho_processo;
+    novo->num_paginas = tamanho_processo / sim->tamanho_pagina;
+
+    if (tamanho_processo % sim->tamanho_pagina != 0) {
+        novo->num_paginas += 1;
+    }
+
+    novo->tabela_paginas = (Pagina*) malloc(novo->num_paginas * sizeof(Pagina));
+
+    for (int i = 0; i < novo->num_paginas; i++) {
+        novo->tabela_paginas[i].presente = 0;
+        novo->tabela_paginas[i].frame = -1;
+        novo->tabela_paginas[i].modificada = 0;
+        novo->tabela_paginas[i].referenciada = 0;
+        novo->tabela_paginas[i].tempo_carga = -1;
+        novo->tabela_paginas[i].ultimo_acesso = -1;
+    }
+
+    sim->num_processos++;
+    sim->processos = (Processo*) realloc(sim->processos, sim->num_processos * sizeof(Processo));
+    sim->processos[sim->num_processos - 1] = *novo;
+
+    printf("Processo PID %d criado com %d páginas.\n",
+           novo->pid, novo->num_paginas);
+
+    free(novo);  // Liberação do ponteiro 
+
+    return &sim->processos[sim->num_processos - 1];
 }
 
 int main() {
