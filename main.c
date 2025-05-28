@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 // Definição das Estruturas
 typedef struct {
@@ -40,57 +41,77 @@ typedef struct {
 } Simulador;
 
 
-// Inicializa o simulador com os parâmetros fornecidos
-Simulador * inicializar_simulador (int tamanho_pagina , int tamanho_memoria_fisica );
-// Cria um novo processo e o adiciona ao simulador
-Processo* criar_processo ( Simulador *sim , int tamanho_processo );
+void exibe_menu();
 
-// Traduz um endereço virtual para físico
-// Retorna o endereço físico ou -1 em caso de page fault
-int traduzir_endereco ( Simulador *sim , int pid , int endereco_virtual );
-// Extrai o número da página e o deslocamento de um endereço virtual
-void extrair_pagina_deslocamento ( Simulador *sim , int endereco_virtual ,
-int *pagina , int * deslocamento );
+Simulador* inicializar_simulador(int tamanho_pagina , int tamanho_memoria_fisica, int algoritmo_selecionado);
 
-// Verifica se uma página está presente na memória física
-int verificar_pagina_presente ( Simulador *sim , int pid , int pagina);
-// Carrega uma página na memória física
-// Retorna o número do frame onde a página foi carregada
-int carregar_pagina ( Simulador *sim , int pid , int pagina);
-// Implementa o algoritmo de substituição de páginas FIFO
-int substituir_pagina_fifo ( Simulador *sim);
-// Implementa o algoritmo de substituição de páginas LRU
-int substituir_pagina_lru ( Simulador *sim);
-// Implementa o algoritmo de substituição de páginas CLOCK
-int substituir_pagina_clock ( Simulador *sim);
-// Implementa o algoritmo de substituição de páginas RANDOM
-int substituir_pagina_random ( Simulador *sim);
+// Menu principal
+void exibe_menu() {
+    int opcao = -1;
 
-// Exibe o estado atual da memória física
-void exibir_memoria_fisica ( Simulador *sim);
-// Exibe estatísticas da simulação
-void exibir_estatisticas ( Simulador *sim);
-// Registra um acesso à memória
-void registrar_acesso ( Simulador *sim , int pid , int pagina , int tipo_acesso );
+    while (1) {
+        printf("===== SIMULADOR DE PAGINAÇÃO =====\n");
+        printf("Escolha o algoritmo de substituição de páginas:\n");
+        printf("1 - FIFO\n");
+        printf("2 - LRU\n");
+        printf("3 - Sair\n");
+        printf("Opção: ");
+        scanf("%d", &opcao);
 
-// Executa a simulação com uma sequência de acessos à memória
-void executar_simulacao ( Simulador *sim , int algoritmo );
-// Simula um acesso à memória
-int acessar_memoria ( Simulador *sim , int pid , int endereco_virtual );
+        if (opcao == 3) {
+            printf("Muito obrigado por utilizar o simulador, espero que tenha gostado!!!\n");
+            break;
+        }
 
-void extrair_pagina_deslocamento(Simulador *sim , int endereco_virtual, int *pagina , int * deslocamento){
-    *pagina = endereco_virtual / sim->tamanho_pagina;
-    *deslocamento = endereco_virtual % sim->tamanho_pagina;
+        if (opcao != 1 && opcao != 2) {
+            printf("Opção inválida! Tente novamente.\n\n");
+            continue;
+        }
+
+        int algoritmo = (opcao == 1) ? 0 : 1;
+
+        Simulador *sim = inicializar_simulador(4096, 16384, algoritmo);
+
+        printf("\nSimulador inicializado com sucesso!\n");
+        printf("Algoritmo selecionado: %s\n\n", (algoritmo == 0) ? "FIFO" : "LRU");
+
+        // Liberação de memória
+        free(sim->memoria.frames);
+        free(sim->memoria.tempo_carga);
+        free(sim->processos);
+        free(sim);
+
+        printf("\n===============================\n\n");
+    }
 }
 
-int verificar_pagina_presente(Simulador *sim, int pid, int pagina) {
-    Processo *proc = &sim->processos[pid];
-    return proc->tabela_paginas[pagina].presente;
+
+// Inicializa o simulador
+Simulador* inicializar_simulador(int tamanho_pagina, int tamanho_memoria, int algoritmo_selecionado) {
+    Simulador *sim = (Simulador*) malloc(sizeof(Simulador));
+    sim->tempo_atual = 0;
+    sim->tamanho_pagina = tamanho_pagina;
+    sim->tamanho_memoria_fisica = tamanho_memoria;
+    sim->num_processos = 0;
+    sim->processos = NULL;
+
+    sim->memoria.num_frames = tamanho_memoria / tamanho_pagina;
+    sim->memoria.frames = (int*) malloc(sim->memoria.num_frames * sizeof(int));
+    sim->memoria.tempo_carga = (int*) malloc(sim->memoria.num_frames * sizeof(int));
+
+    for (int i = 0; i < sim->memoria.num_frames; i++) {
+        sim->memoria.frames[i] = -1; // -1 indica frame vazio
+        sim->memoria.tempo_carga[i] = -1;
+    }
+
+    sim->total_acessos = 0;
+    sim->page_faults = 0;
+    sim->algoritmo = algoritmo_selecionado;
+
+    return sim;
 }
 
-int main(){
-
-    printf("SIMULAÇÃO\n");
-
+int main() {
+    exibe_menu();
     return 0;
 }
