@@ -64,6 +64,14 @@ void exibe_menu() {
         printf("Opção: ");
         scanf("%d", &opcao);
 
+        char linha[100];
+        fgets(linha, sizeof(linha), stdin);
+
+        if (sscanf(linha, "%d", &opcao) != 1) {
+            printf("Entrada inválida, digite um número!\n");
+            continue;
+        }
+
         if (opcao == 3) {
             printf("Muito obrigado por utilizar o simulador, espero que tenha gostado!!!\n");
             break;
