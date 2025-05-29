@@ -10,7 +10,7 @@ int traduzir_endereco(Simulador *sim, int pid, int endereco_virtual);
 int carregar_pagina(Simulador *sim, int pid, int pagina);
 int acessar_memoria(Simulador *sim, int pid, int endereco_virtual);
 
-// Algoritmos de substituição de página
+// Inicialiação dos algoritmos de substituição
 int substituir_pagina_fifo(Simulador *sim);
 int substituir_pagina_lru(Simulador *sim);
 
