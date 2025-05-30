@@ -33,7 +33,7 @@ O simulador registra estatísticas importantes como o número de acessos à mem�
 ```
 ProjetoSO_2Bimestre/
 ├── doc/
-│     └── doc/Projeto2_SimuladorDePaginaçãoDeMemória.pdf # Relatório principal do projeto
+│     └── Projeto2_SimuladorDePaginaçãoDeMemória.pdf # Relatório principal do projeto
 ├── estruturas.h         # Definições de estruturas e constantes
 ├── memoria.h            # Cabeçalhos das funções de gerenciamento de memória
 ├── memoria.c            # Implementação do gerenciamento de memória e algoritmos
