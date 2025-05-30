@@ -97,11 +97,13 @@ void exibir_estatisticas(Simulador *sim) {
 void executar_simulacao(Simulador *sim, int algoritmo) {
     // Acessos simulados: processo, endereço_virtual
     int acessos[][2] = {
-        {1, 1111}, {2, 2222}, {3, 3333},
-        {1, 4444}, {2, 1234}, {3, 2345},
-        {1, 4096}, {1, 8192}, {2, 4096}, {3, 8192},
-        {1, 1024}, {2, 2048}, {3, 3072}, {1, 512}, {2, 6000},
-        {3, 999}, {1, 3500}, {2, 7000}, {3, 1200}, {1, 8192}
+        {1, 0}, 
+        {1, 4096},
+        {2, 0},
+        {2, 4096},
+        {1, 0},
+        {3, 0},
+        {1, 0}
     };
 
     int total = sizeof(acessos) / sizeof(acessos[0]);

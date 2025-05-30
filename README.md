@@ -31,14 +31,20 @@ O simulador registra estatísticas importantes como o número de acessos à mem�
 
 ```
 ProjetoSO_2Bimestre/
+├── doc/
+│     └── doc/Projeto2_SimuladorDePaginaçãoDeMemória.pdf # Relatório principal do projeto
 ├── estruturas.h         # Definições de estruturas e constantes
 ├── memoria.h            # Cabeçalhos das funções de gerenciamento de memória
 ├── memoria.c            # Implementação do gerenciamento de memória e algoritmos
 ├── simulador.h          # Cabeçalhos das funções do simulador e interface
 ├── simulador.c          # Implementação do simulador e interface do usuário
 ├── main.c               # Arquivo principal
-└── README.md            # Documentação do projeto
+└── README.md            # Documentação auxiliar do projeto
 ```
+
+## Relatório
+
+O relatório completo do projeto está disponível [aqui](doc/Projeto2_SimuladorDePaginaçãoDeMemória.pdf).
 
 ## Funcionalidades Implementadas
 
@@ -68,8 +74,6 @@ gcc -o simulador main.c simulador.c memoria.c
 ```bash
 ./simulador
 ```
-
-
 
 ## Como Usar o Simulador
 
