@@ -1,9 +1,10 @@
 # Simulador de Paginação de Memória
 
-Este projeto implementa um simulador de paginação de memória para a disciplina de Sistemas Operacionais, demonstrando o funcionamento de diferentes algoritmos de substituição de páginas.
+Este projeto implementa um simulador de paginação de memória para a disciplina de Sistemas Operacionais do curso de Ciência da Computação, demonstrando o funcionamento de diferentes algoritmos de substituição de páginas.
 
 ## Integrantes do Grupo
 
+- Eduardo Henrique de Souza Cruz RA: 10358690
 - Guilherme Teodoro de Oliveira RA: 10425362
 - Luís Henrique Ribeiro Fernandes RA: 10420079  
 - Vinícius Brait Lorimier RA: 10420046
